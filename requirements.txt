@@ -6,7 +6,6 @@ click-plugins==1.1.1
 cligj==0.7.2
 colorama==0.4.4
 Fiona==1.8.21 
-pygdal==3.4.2.*
 geographiclib==1.52
 geopandas==0.10.2
 geopy==2.2.0
