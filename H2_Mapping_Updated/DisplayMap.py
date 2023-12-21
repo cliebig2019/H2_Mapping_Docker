@@ -12,10 +12,10 @@ import timeit
 from PyQt6.QtWebEngineWidgets import *
 from PyQt6.QtWidgets import *
 from print_results import *
-sys.path.append("/shapefile_to_network/main/convertor")
-sys.path.append("/shapefile_to_network/main/shortest_paths")
-from shapefile_to_network.main.convertor.GraphConvertor import GraphConvertor
-from shapefile_to_network.main.shortest_paths.ShortestPath import ShortestPath
+sys.path.append(os.environ.get("BASE_PATH") + "/shapefile_to_network/main/convertor")
+sys.path.append(os.environ.get("BASE_PATH") + "/shapefile_to_network/main/shortest_paths")
+from H2_Mapping_Updated.shapefile_to_network.main.convertor.GraphConvertor import GraphConvertor
+from H2_Mapping_Updated.shapefile_to_network.main.shortest_paths.ShortestPath import ShortestPath
 from shapely import speedups
 
 speedups.disable()
@@ -207,8 +207,8 @@ class Visualizing(QWidget):
         transport_mode = self.df['Transport Mode'][mindex]
 
         # Create GraphConvertor object by passing the path of input shapefile and the output directory
-        input_file = 'Data/shipping/shipping_routes/shipping_routes.shp'
-        output_dir = 'Data/shipping/nodes'
+        input_file = os.environ.get("BASE_PATH") + 'Data/shipping/shipping_routes/shipping_routes.shp'
+        output_dir = os.environ.get("BASE_PATH") + 'Data/shipping/nodes'
 
         graph_convertor_obj = GraphConvertor(input_file, output_dir)
 
@@ -217,12 +217,12 @@ class Visualizing(QWidget):
         network = graph_convertor_obj.graph_convertor()
 
         edges = gpd.read_file(input_file)
-        nodes = gpd.read_file('Data/shipping/nodes/New Shape/nodes.shp')
+        nodes = gpd.read_file(os.environ.get("BASE_PATH") + 'Data/shipping/nodes/New Shape/nodes.shp')
 
-        sf = shp.Reader('Data/shipping/shipping_routes/shipping_routes.shp')
+        sf = shp.Reader(os.environ.get("BASE_PATH") + 'Data/shipping/shipping_routes/shipping_routes.shp')
 
-        df_port_index = pd.read_csv('Data/port_index.csv', index_col=0)
-        df_ports = pd.read_csv('Data/path/ports.csv')
+        df_port_index = pd.read_csv(os.environ.get("BASE_PATH") + 'Data/port_index.csv', index_col=0)
+        df_ports = pd.read_csv(os.environ.get("BASE_PATH") + 'Data/path/ports.csv')
 
         port_coords = self.create_port_coordinates(df_ports)
 
@@ -685,7 +685,7 @@ class Visualizing(QWidget):
 
     def plot_world_results_mc(self):
 
-        list_locations = pd.read_csv("Data/locationslist.csv")
+        list_locations = pd.read_csv(os.environ.get("BASE_PATH") + "Data/locationslist.csv")
         data = self.mc_df.mean()
         dataframes = [list_locations[['Latitude', 'Longitude']], data]
 

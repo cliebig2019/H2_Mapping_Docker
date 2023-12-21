@@ -1,12 +1,13 @@
 import json
+import os
 import sys
 import geopy.distance
 import requests
 from scipy import spatial
 from H2_Mapping_Updated.mc_transport_cost_functions import *
 
-sys.path.append("shapefile_to_network/main/convertor")
-sys.path.append("shapefile_to_network/main/shortest_paths")
+sys.path.append(os.environ.get("BASE_PATH") + "shapefile_to_network/main/convertor")
+sys.path.append(os.environ.get("BASE_PATH") + "shapefile_to_network/main/shortest_paths")
 
 from H2_Mapping_Updated.shapefile_to_network.main.convertor.GraphConvertor import GraphConvertor
 from H2_Mapping_Updated.shapefile_to_network.main.shortest_paths.ShortestPath import ShortestPath
@@ -54,8 +55,8 @@ def create_network():
     no input. """
 
     # Create GraphConvertor object by passing the path of input shapefile and the output directory
-    input_file = 'Data/shipping/shipping_routes/shipping_routes.shp'
-    output_dir = 'Data/shipping/nodes'
+    input_file = os.environ.get("BASE_PATH") + 'Data/shipping/shipping_routes/shipping_routes.shp'
+    output_dir = os.environ.get("BASE_PATH") + 'Data/shipping/nodes'
 
     graph_convertor_obj = GraphConvertor(input_file, output_dir)
 
@@ -116,8 +117,8 @@ def check_port_path(df, end_plant_tuple):
     the port index dataframe. If not, calculates it using the function create_path, which takes around 1.5 hours.
     Takes as input the main dataframe, the end point (lat, lon) and a list of all the port co-ordinates."""
 
-    df_port_index = pd.read_csv('Data/port_index.csv', index_col=0)
-    df_ports = pd.read_csv('Data/path/ports.csv')
+    df_port_index = pd.read_csv(os.environ.get("BASE_PATH") + 'Data/port_index.csv', index_col=0)
+    df_ports = pd.read_csv(os.environ.get("BASE_PATH") + 'Data/path/ports.csv')
 
     port_coords = create_port_coordinates(df_ports)
 
@@ -135,7 +136,7 @@ def check_port_path(df, end_plant_tuple):
         print('Creating new shipping distances (should take 15-20 mins)...')
         df = create_shipping_path(df, end_port_tuple)
         df_port_index[end_port_code] = df['Shipping Dist.']
-        df_port_index.to_csv('Data/port_index.csv')
+        df_port_index.to_csv(os.environ.get("BASE_PATH") + 'Data/port_index.csv')
 
     return df, end_port_tuple
 

@@ -6,7 +6,7 @@ import networkx as nx
 import geopy.distance
 from haversine import haversine
 
-sys.path.append("/shapefile_to_network/main/convertor")
+sys.path.append(os.environ.get("BASE_PATH") + "/shapefile_to_network/main/convertor")
 from H2_Mapping_Updated.shapefile_to_network.main.convertor.GraphSimplify import GraphSimplify
 from H2_Mapping_Updated.shapefile_to_network.main.convertor.MultiDiGraphConvertor import MultiDiToSimple
 

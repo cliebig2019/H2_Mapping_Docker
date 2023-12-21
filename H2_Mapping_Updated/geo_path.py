@@ -6,8 +6,8 @@ import json
 from H2_Mapping_Updated.Transport_cost_functions import *
 import os
 
-sys.path.append("shapefile_to_network/main/convertor")
-sys.path.append("shapefile_to_network/main/shortest_paths")
+sys.path.append(os.environ.get("BASE_PATH") + "shapefile_to_network/main/convertor")
+sys.path.append(os.environ.get("BASE_PATH") + "shapefile_to_network/main/shortest_paths")
 
 from H2_Mapping_Updated.shapefile_to_network.main.convertor.GraphConvertor import GraphConvertor
 from H2_Mapping_Updated.shapefile_to_network.main.shortest_paths.ShortestPath import ShortestPath
@@ -55,8 +55,8 @@ def create_network():
     no input. """
 
     # Create GraphConvertor object by passing the path of input shapefile and the output directory
-    input_file = 'Data/shipping/shipping_routes/shipping_routes.shp'
-    output_dir = 'Data/shipping/nodes'
+    input_file = os.environ.get("BASE_PATH") + 'Data/shipping/shipping_routes/shipping_routes.shp'
+    output_dir = os.environ.get("BASE_PATH") + 'Data/shipping/nodes'
 
     graph_convertor_obj = GraphConvertor(input_file, output_dir)
 
@@ -137,7 +137,7 @@ def check_port_path(df, end_plant_tuple):
         print('Creating new shipping distances (should take 15-20 mins)...')
         df = create_shipping_path(df, end_port_tuple)
         df_port_index[end_port_code] = df['Shipping Dist.']
-        df_port_index.to_csv('Data/port_index.csv')
+        df_port_index.to_csv(os.environ.get("BASE_PATH") + 'Data/port_index.csv')
 
     return df, end_port_tuple
 

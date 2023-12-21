@@ -67,7 +67,7 @@ class MonteCarloComputing:
         pipeline distance (km) as input. Calculates the minimum of (transport + generation) cost for all possible start
         locations to determine the cheapest source of renewable H2. """
 
-        df = pd.read_csv(filepath_or_buffer="Data/renewables.csv", index_col=0)
+        df = pd.read_csv(filepath_or_buffer=os.environ.get("BASE_PATH") + "Data/renewables.csv", index_col=0)
 
         total_cost_per_kg_h2 = np.zeros((iterations, len(df)))
         generation_cost_per_kg = np.zeros((iterations, len(df)))
