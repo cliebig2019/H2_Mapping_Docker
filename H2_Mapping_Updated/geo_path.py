@@ -6,8 +6,8 @@ import json
 from H2_Mapping_Updated.Transport_cost_functions import *
 import os
 
-sys.path.append(os.environ.get("BASE_PATH") + "shapefile_to_network/main/convertor")
-sys.path.append(os.environ.get("BASE_PATH") + "shapefile_to_network/main/shortest_paths")
+sys.path.append("shapefile_to_network/main/convertor")
+sys.path.append("shapefile_to_network/main/shortest_paths")
 
 from H2_Mapping_Updated.shapefile_to_network.main.convertor.GraphConvertor import GraphConvertor
 from H2_Mapping_Updated.shapefile_to_network.main.shortest_paths.ShortestPath import ShortestPath
