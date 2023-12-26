@@ -34,7 +34,7 @@ class Computing:
         df['Transport Mode'] = ''
         df['Transport Mode'][mindex] = final_path
 
-        df.to_csv(os.environ.get("BASE_PATH") + 'Results/' + str(end_tuple[0]) + ',' + str(end_tuple[1]) + '.csv')
+        df.to_csv(os.environ.get("RESULT_PATH") + 'Results/' + str(end_tuple[0]) + ',' + str(end_tuple[1]) + '.csv')
 
         return df
 
@@ -57,7 +57,7 @@ class Computing:
 
         df = self.compute(end_tuple, demand, year, elec, centralised, pipeline, max_dist)
 
-        df.to_csv(os.environ.get("BASE_PATH") + 'Results/final_df.csv')
+        df.to_csv(os.environ.get("RESULT_PATH") + 'Results/final_df.csv')
 
         # stop timer
         stop = timeit.default_timer()

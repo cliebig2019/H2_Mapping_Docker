@@ -35,7 +35,7 @@ class MonteCarloComputing:
                                                                                               max_pipeline_dist,
                                                                                               iterations, elec)
 
-        newpath = "Results/mc/" + str(round(et[0])) + ',' + str(round(et[1])) + '__' + str(
+        newpath = os.environ.get("RESULT_PATH") + str(round(et[0])) + ',' + str(round(et[1])) + '__' + str(
             yr) + '__' + str(h2) + '__' + elec + '__' + str(pipeline) + '__' + str(iterations)
         if pipeline == True:
             newpath = newpath + '__Pipe'
