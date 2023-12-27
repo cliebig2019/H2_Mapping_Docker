@@ -57,7 +57,7 @@ class Computing:
 
         df = self.compute(end_tuple, demand, year, elec, centralised, pipeline, max_dist)
 
-        df.to_csv(os.environ.get("RESULT_PATH") + '/final_df.csv')
+        df.to_csv(os.environ.get("RESULT_PATH") + 'final_df.csv')
 
         # stop timer
         stop = timeit.default_timer()
