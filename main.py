@@ -20,7 +20,7 @@ def main(latitude, longitude, h2_demand, year, centralised, pipeline, max_pipeli
 
         mc_computing = mc_main.MonteCarloComputing(paramSet)
         result = mc_computing.run_mc_model()
-         
+
     else:
         paramSet = ParameterSet.ParameterSet()
         paramSet.latitude = latitude
@@ -53,6 +53,6 @@ parser.add_argument("-it", "--iterations", nargs="?", type=int, required=False)
 
 args=parser.parse_args()
 
-main(args.latitude, args.longitude, args.h2_demand, args.year, args.centralised, args.pipeline, args.max_pipeline_dist, args.electrolyzer)
+main(args.latitude, args.longitude, args.h2_demand, args.year, args.centralised, args.pipeline, args.max_pipeline_dist, args.electrolyzer, args.montecarlo, args.iterations)
 
 
