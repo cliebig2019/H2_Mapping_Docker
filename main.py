@@ -2,11 +2,15 @@ from H2_Mapping_Updated import ui_library
 from H2_Mapping_Updated import mc_main
 from H2_Mapping_Updated import ParameterSet
 import argparse
+from H2_Mapping_Updated import DisplayMap
 from dotenv import load_dotenv
+import os
+from Utils.writeFile import write_html
 
 def main(latitude, longitude, h2_demand, year, centralised, pipeline, max_pipeline_dist, electrolyzer, montecarlo, iterations):
 
     if montecarlo:
+
         paramSet = ParameterSet.ParameterSet()
         paramSet.latitude = latitude
         paramSet.longitude = longitude
@@ -21,7 +25,25 @@ def main(latitude, longitude, h2_demand, year, centralised, pipeline, max_pipeli
         mc_computing = mc_main.MonteCarloComputing(paramSet)
         result = mc_computing.run_mc_model()
 
+        base_path = os.environ.get("RESULT_PATH") + "/mc/"
+        visualization_path = base_path + "visualization/"
+
+        os.mkdir(visualization_path)
+
+        solar_html = DisplayMap.plot_world_results_mc(base_path + "solar_cost.csv")
+        write_html(solar_html, visualization_path + "solar_cost.html")
+
+        generation_html = DisplayMap.plot_world_results_mc(base_path + "generation_cost_per_kg_h2.csv")
+        write_html(generation_html, visualization_path + "generation_cost.html")
+
+        total_html = DisplayMap.plot_world_results_mc(base_path + "total_cost_per_kg_h2.csv")
+        write_html(total_html, visualization_path + "total_costs.html")
+
+        wind_html = DisplayMap.plot_world_results_mc(base_path + "wind_cost.csv")
+        write_html(wind_html, visualization_path + "wind_costs.html")
+
     else:
+
         paramSet = ParameterSet.ParameterSet()
         paramSet.latitude = latitude
         paramSet.longitude = longitude
@@ -35,6 +57,19 @@ def main(latitude, longitude, h2_demand, year, centralised, pipeline, max_pipeli
         computation = ui_library.Computing(paramSet)
         result = computation.run_single_model()
 
+        base_path = os.environ.get("RESULT_PATH")
+        visualization_path = base_path + "visualization/"
+
+        os.mkdir(visualization_path)
+
+        route_html, total_cost_html, gen_cost_html, transport_cost_html, cheapest_medium_html = DisplayMap.normal(base_path + "final_df.csv")
+
+        write_html(route_html, visualization_path + "route.html")
+        write_html(total_cost_html, visualization_path + "total_cost.html")
+        write_html(gen_cost_html, visualization_path + "gen_cost.html")
+        write_html(transport_cost_html, visualization_path + "transport_cost.html")
+        write_html(cheapest_medium_html, visualization_path + "cheapest_medium.html")
+        
     print(result)
 
 load_dotenv()

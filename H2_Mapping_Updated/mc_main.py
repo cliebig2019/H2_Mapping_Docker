@@ -35,12 +35,14 @@ class MonteCarloComputing:
                                                                                               max_pipeline_dist,
                                                                                               iterations, elec)
 
-        newpath = os.environ.get("RESULT_PATH") + str(round(et[0])) + ',' + str(round(et[1])) + '__' + str(
-            yr) + '__' + str(h2) + '__' + elec + '__' + str(pipeline) + '__' + str(iterations)
+        newpath = os.environ.get("RESULT_PATH") + "mc"
+
+        """
         if pipeline == True:
             newpath = newpath + '__Pipe'
         if centralised == False:
             newpath = newpath + '__decent'
+        """
 
         if not os.path.exists(newpath):
             os.makedirs(newpath)
