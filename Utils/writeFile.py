@@ -1,5 +1,3 @@
-import os
-
 def write_html(html, path):
 
     f = open(path, "a")
