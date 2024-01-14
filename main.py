@@ -6,6 +6,8 @@ from H2_Mapping_Updated import DisplayMap
 from dotenv import load_dotenv
 import os
 from Utils.writeFile import write_html
+from Utils.writeFile import write_json
+from Utils.writeFile import write_file
 
 def main(latitude, longitude, h2_demand, year, centralised, pipeline, max_pipeline_dist, electrolyzer, montecarlo, iterations):
 
@@ -28,6 +30,8 @@ def main(latitude, longitude, h2_demand, year, centralised, pipeline, max_pipeli
         base_path = os.environ.get("RESULT_PATH") + "/mc/"
         visualization_path = base_path + "visualization/"
 
+        write_file(result.to_json(orient="records", lines=True, indent=4), str(os.environ.get("RESULT_PATH")) + "results.json")
+
         os.mkdir(visualization_path)
 
         solar_html = DisplayMap.plot_world_results_mc(base_path + "solar_cost.csv")
@@ -41,7 +45,6 @@ def main(latitude, longitude, h2_demand, year, centralised, pipeline, max_pipeli
 
         wind_html = DisplayMap.plot_world_results_mc(base_path + "wind_cost.csv")
         write_html(wind_html, visualization_path + "wind_costs.html")
-
     else:
 
         paramSet = ParameterSet.ParameterSet()
@@ -55,10 +58,22 @@ def main(latitude, longitude, h2_demand, year, centralised, pipeline, max_pipeli
         paramSet.electrolyzer_type = electrolyzer
 
         computation = ui_library.Computing(paramSet)
-        result = computation.run_single_model()
+        min_cost, mindex, cheapest_source, cheapest_medium, cheapest_elec, final_path = computation.run_single_model()
+
+        result = {
+            "min_cost": str(min_cost),
+            "mindex": str(mindex),
+            "cheapest_source": str(cheapest_source),
+            "cheapest_medium": str(cheapest_medium),
+            "cheapest_elec": str(cheapest_elec),
+            "final_path": str(final_path)
+        }
 
         base_path = os.environ.get("RESULT_PATH")
         visualization_path = base_path + "visualization/"
+
+        write_json(result, str(base_path) + "results.json")
+
 
         os.mkdir(visualization_path)
 
@@ -70,8 +85,7 @@ def main(latitude, longitude, h2_demand, year, centralised, pipeline, max_pipeli
         write_html(transport_cost_html, visualization_path + "transport_cost.html")
         write_html(cheapest_medium_html, visualization_path + "cheapest_medium.html")
         
-    print(result)
-
+        
 load_dotenv()
 
 parser = argparse.ArgumentParser(description="Calculate H2 Mapping", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
